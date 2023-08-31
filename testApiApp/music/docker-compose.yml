@@ -1,0 +1,41 @@
+version: '3.10'
+
+services:
+  web:
+    container_name: hhtask_django
+    build: .
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - .:/usr/src/app
+    networks:
+      - hhtask_net
+    ports:
+      - '8080:8000'
+    env_file:
+      - .env
+    depends_on:
+      - db
+
+
+
+  db:
+    container_name: hhtask_db
+    image: postgres:14.7-alpine
+    networks:
+      - hhtask_net
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    environment:
+      - POSTGRES_DB=hhtask
+      - POSTGRES_USER=lisatrot
+      - POSTGRES_PASSWORD=11111111
+    ports:
+      - '0.0.0.0:5455:5432'
+
+      
+volumes:
+  postgres_data:
+
+
+networks:
+  hhtask_net:
